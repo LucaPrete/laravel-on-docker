@@ -87,7 +87,6 @@ USER www-data
 # Optimize Laravel configuration
 RUN composer dump-autoload
 RUN php artisan config:cache
-RUN php artisan route:cache
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
