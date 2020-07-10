@@ -1,0 +1,63 @@
+version: '3'
+services:
+
+  # Nginx
+  webserver:
+    image: nginx:alpine
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8080:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www:cached
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    depends_on:
+      - postgres
+    networks:
+      - my-net
+
+  # PHP application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lucaprete/laravel-on-docker
+    container_name: app
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - .:/code:cached
+    tmpfs:
+      - /code/storage/logs
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    networks:
+      - my-net
+
+  # Postgres
+  postgres:
+    image: postgres:12.3-alpine
+    container_name: postgres
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    networks:
+      - my-net
+
+# Volumes
+volumes:
+  dbdata:
+
+#Docker Networks
+networks:
+  my-net:
+    driver: bridge
