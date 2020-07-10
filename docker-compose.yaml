@@ -3,7 +3,7 @@ services:
 
   # Nginx
   webserver:
-    image: nginx:alpine
+    image: nginx:1.19-alpine
     container_name: webserver
     restart: unless-stopped
     tty: true
@@ -18,7 +18,7 @@ services:
     networks:
       - my-net
 
-  # PHP application
+  # Laravel application
   app:
     build:
       context: .
@@ -57,7 +57,7 @@ services:
 volumes:
   dbdata:
 
-#Docker Networks
+# Networks
 networks:
   my-net:
     driver: bridge
