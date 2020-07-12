@@ -1,7 +1,7 @@
 FROM php:7.2-fpm AS base
 
 # Set working directory
-WORKDIR /code
+WORKDIR /var/www
 
 FROM base AS extensions
 
@@ -62,24 +62,24 @@ COPY --from=composer:1.7.2 /usr/bin/composer /usr/bin/composer
 RUN mkdir /.composer
 
 RUN chown -R www-data:www-data /.composer
-RUN chown -R www-data:www-data /code
+RUN chown -R www-data:www-data /var/www
 
 FROM composer AS deps
 
-COPY composer.json /code/composer.json
-COPY composer.lock /code/composer.lock
+COPY composer.json /var/www/composer.json
+COPY composer.lock /var/www/composer.lock
 
 RUN composer install --no-dev --no-autoloader
 
 FROM deps AS production
 
-COPY . /code
+COPY . /var/www
 
 # Configure Laravel - permissions
-RUN chown -R www-data:www-data /code
-RUN find /code -type d -exec chmod 755 {} \;
-RUN find /code -type d -exec chmod ug+s {} \;
-RUN find /code -type f -exec chmod 644 {} \;
+RUN chown -R www-data:www-data /var/www
+RUN find /var/www -type d -exec chmod 755 {} \;
+RUN find /var/www -type d -exec chmod ug+s {} \;
+RUN find /var/www -type f -exec chmod 644 {} \;
 RUN chmod -R ug+rwx storage bootstrap/cache
 
 USER www-data

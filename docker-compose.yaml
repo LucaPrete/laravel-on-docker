@@ -28,9 +28,9 @@ services:
     restart: unless-stopped
     tty: true
     volumes:
-      - .:/code:cached
+      - .:/var/www:cached
     tmpfs:
-      - /code/storage/logs
+      - /var/www/storage/logs
     env_file:
       - .env
     depends_on:
