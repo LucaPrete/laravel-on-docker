@@ -6,7 +6,7 @@
 
 The [docker-compose file](docker-compose.yaml) brings up a local environment with:
 
-* [Laravel 7.12](https://laravel.com)
+* [Laravel X.XX](https://laravel.com) - to be installed manually (see below)
 
 * [Nginx 1.19-alpine](https://www.nginx.com/) ([config](nginx/conf.d/site.conf))
 
