@@ -84,6 +84,10 @@ RUN chmod -R ug+rwx storage bootstrap/cache
 
 USER www-data
 
+# Create an empty .env file to avoid errors
+# Values will be read from environment variables
+RUN touch .env
+
 # Optimize Laravel configuration
 RUN composer dump-autoload
 RUN php artisan config:cache
